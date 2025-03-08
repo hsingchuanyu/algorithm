@@ -1,0 +1,34 @@
+package homework;
+
+public class Class_leetcode_239 {
+
+	public static int MAXN = 100001;
+	
+	public static int[] deque = new int[MAXN];
+	
+	public static int h, t;
+	
+	public int[] maxSlidingWindow(int[] arr, int k) {
+		h = t = 0;
+		int n = arr.length;
+		for(int i = 0; i < k - 1; i++) {
+			while(h < t && arr[deque[t - 1]] <= arr[i]) {
+				t--;
+			}
+			deque[t++] = i;
+		}
+		int m = n - k + 1;
+		int[] ans = new int[m];
+		for(int l = 0, r = k - 1; r < n; l++, r++) {
+			while(h < t && arr[deque[t - 1]] <= arr[r]) {
+				t--;
+			}
+			deque[t++] = r;
+			ans[l] = arr[deque[h]];
+			if (deque[h] == l) {
+				h++;
+			}
+		}
+		return ans;
+	}
+}
