@@ -1,0 +1,103 @@
+package homework;
+
+import java.util.Map;
+import java.util.HashMap;
+public class Class_leetcode_460 {
+
+	public class LFUCache {
+		class Node {
+			int key, value, frequency;
+			Node pre, next;
+			Node(int key, int value) {
+				this.key = key;
+				this.value = value;
+				this.frequency = 1;
+			}
+		}
+		class DLinkedList {
+			Node head, tail;
+			int size;
+			DLinkedList() {
+				head = new Node(0, 0);
+				tail = new Node(0, 0);
+				head.next = tail;
+				tail.pre = head;
+			}
+			
+			void add(Node node) {
+				node.next = head.next;
+				node.pre = head;
+				head.next.pre = node;
+				head.next = node;
+				size++;
+			}
+			
+			void remove(Node node) {
+				node.next.pre = node.pre;
+				node.pre.next = node.next;
+				size--;
+			}
+			
+			Node removeLast() {
+				if(size > 0) {
+					Node last = tail.pre;
+					remove(last);
+					return last;
+				}
+				return null;
+			}
+		}
+		int capacity, size, min;
+		Map<Integer, Node> nodeMap;
+		Map<Integer, DLinkedList> frequencyMap;
+		
+		public LFUCache(int capacity) {
+			this.capacity = capacity;
+			nodeMap = new HashMap<>();
+			frequencyMap = new HashMap<>();
+		}
+		
+		public int get(int key) {
+			Node node = nodeMap.get(key);
+			if(node == null) return -1;
+			update(node);
+			return node.value;
+		}
+		
+		public void put(int key, int value) {
+			if(capacity == 0) return;
+			Node node;
+			if(nodeMap.containsKey(key)) {
+				node = nodeMap.get(key);
+				node.value = value;
+				update(node);
+			}
+			else {
+				node = new Node(key, value);
+				nodeMap.put(key, node);
+				if(size == capacity) {
+					DLinkedList lastlist = frequencyMap.get(min);
+					nodeMap.remove(lastlist.removeLast().key);
+					size--;
+				}
+				size++;
+				min = 1;
+				DLinkedList newList = frequencyMap.getOrDefault(node.frequency, new DLinkedList());
+				newList.add(node);
+				frequencyMap.put(node.frequency, newList);
+			}
+		}
+		
+		public void update(Node node) {
+			DLinkedList oldList = frequencyMap.get(node.frequency);
+			oldList.remove(node);
+			if(node.frequency == min && oldList.size == 0) min++;
+			node.frequency++;
+			DLinkedList newList = frequencyMap.getOrDefault(node.frequency, new DLinkedList());
+			newList.add(node);
+			frequencyMap.put(node.frequency, newList);
+		}
+	}
+	
+	
+}
