@@ -1,0 +1,19 @@
+package homework;
+
+public class Class_leetcode_45 {
+
+	public static int jump(int[] arr) {
+		int n = arr.length;
+		int cur = 0;
+		int next = 0;
+		int ans = 0;
+		for(int i = 0; i < n; i++) {
+			while(cur < i) {
+				ans++;
+				cur = next;
+			}
+			next = Math.max(next, i + arr[i]);
+		}
+		return ans;
+	}
+}
