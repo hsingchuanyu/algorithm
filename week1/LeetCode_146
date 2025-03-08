@@ -1,0 +1,96 @@
+package homework;
+
+import java.util.Hashtable;
+
+public class class_leetcode_146 {
+	 public class LRUCache {
+		 public class DLinkedNode {
+			 int key;
+			 int value;
+			 DLinkedNode pre;
+			 DLinkedNode next;
+		 }
+		 
+		 public DLinkedNode head;
+		 public DLinkedNode tail;
+		 public int count;
+		 public int capacity;
+		 public Hashtable<Integer, DLinkedNode> cashe = new Hashtable<>();
+		 
+		 public LRUCache(int capacity) {
+			 
+			 this.count = 0;
+			 this.capacity = capacity;
+			 
+			 head = new DLinkedNode();
+			 tail = new DLinkedNode();
+			 
+			 head.pre = null;
+			 tail.next = null;
+			 
+			 head.next = tail;
+			 tail.pre = head;
+		 }
+		 
+		 public void addNode(DLinkedNode node) {
+			 node.next = head.next;
+			 node.pre = head;
+			 head.next.pre = node;
+			 head.next = node;
+		 }
+		 
+		 public void removeNode(DLinkedNode node) {
+			 DLinkedNode next = node.next;
+			 DLinkedNode pre = node.pre;
+			 
+			 pre.next= next;
+			 next.pre = pre;
+		 }
+		 
+		 public void moveToHead(DLinkedNode node) {
+			 removeNode(node);
+			 addNode(node);
+		 }
+		 
+		 public DLinkedNode popTail() {
+			 DLinkedNode last = tail.pre;
+			 removeNode(last);
+			 return last;
+		 }
+		 
+		 public int get(int key) {
+		 
+			 DLinkedNode node = cashe.get(key);
+			 if (node == null) {
+				 return -1;
+			 }
+			 moveToHead(node);
+			 return node.value;
+		 }
+		 
+		 public void put(int key, int value) {
+		     DLinkedNode node = cashe.get(key);
+		     if (node == null) {
+		    	 DLinkedNode newNode = new DLinkedNode();
+		    	 newNode.key = key;
+		    	 newNode.value = value;
+		    	 cashe.put(key, newNode);
+		    	 addNode(newNode);
+		    	 count++;
+		    	 if (count > capacity) {
+		    		 DLinkedNode tail = popTail();
+		    		 cashe.remove(tail.key);
+		    		 count--;
+		    	 }
+		     }
+		     else {
+		    	 node.value = value;
+		    	 moveToHead(node);
+		     }
+		 }
+	 }
+	     
+	 
+	    
+	 
+}
