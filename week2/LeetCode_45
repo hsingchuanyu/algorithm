@@ -1,8 +1,5 @@
-package homework;
-
-public class Class_leetcode_45 {
-
-	public static int jump(int[] arr) {
+class Solution {
+    public static int jump(int[] arr) {
 		int n = arr.length;
 		int cur = 0;
 		int next = 0;
