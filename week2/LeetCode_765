@@ -1,7 +1,5 @@
-package homework;
-
-public class Class_leetcode_765 {
-	public int minSwapsCouples(int[] row) {
+class Solution {
+    public int minSwapsCouples(int[] row) {
         int n = row.length;
         build(n / 2);
         for(int i = 0; i < n; i += 2) {
