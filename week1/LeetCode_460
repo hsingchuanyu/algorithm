@@ -1,10 +1,5 @@
-package homework;
-
 import java.util.Map;
-import java.util.HashMap;
-public class Class_leetcode_460 {
-
-	public class LFUCache {
+public class LFUCache {
 		class Node {
 			int key, value, frequency;
 			Node pre, next;
@@ -98,6 +93,3 @@ public class Class_leetcode_460 {
 			frequencyMap.put(node.frequency, newList);
 		}
 	}
-	
-	
-}
