@@ -1,7 +1,5 @@
-package homework;
-
-public class Class_leetcode_2366 {
-	 public long minimumReplacement(int[] nums) {
+class Solution {
+    public long minimumReplacement(int[] nums) {
 		 int n = nums.length;
 		 int last = nums[n - 1];
 		 long ans = 0;
