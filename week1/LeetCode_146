@@ -1,9 +1,5 @@
-package homework;
-
 import java.util.Hashtable;
-
-public class class_leetcode_146 {
-	 public class LRUCache {
+public class LRUCache {
 		 public class DLinkedNode {
 			 int key;
 			 int value;
@@ -89,8 +85,3 @@ public class class_leetcode_146 {
 		     }
 		 }
 	 }
-	     
-	 
-	    
-	 
-}
