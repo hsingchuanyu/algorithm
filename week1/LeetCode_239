@@ -1,8 +1,5 @@
-package homework;
-
-public class Class_leetcode_239 {
-
-	public static int MAXN = 100001;
+class Solution {
+    public static int MAXN = 100001;
 	
 	public static int[] deque = new int[MAXN];
 	
