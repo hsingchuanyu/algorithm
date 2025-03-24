@@ -1,0 +1,27 @@
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+		PriorityQueue<ListNode> heap = new PriorityQueue<>((a, b) -> a.val - b.val);
+		for (ListNode list : lists) {
+			if (list != null) {
+				heap.add(list);
+			}
+		}
+		if (heap.isEmpty()) {
+			return null;
+		}
+		ListNode head = heap.poll();
+		ListNode pre = head;
+		if (pre.next != null) {
+			heap.add(pre.next);
+		}
+		while (!heap.isEmpty()) {
+			ListNode cur = heap.poll();
+			pre.next = cur;
+			pre = cur;
+			if (pre.next != null) {
+				heap.add(pre.next);
+			}
+		}
+		return head;
+	}
+}
