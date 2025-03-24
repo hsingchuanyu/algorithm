@@ -1,0 +1,41 @@
+class Solution {
+    
+	public static int MAXN = 50001;
+	
+	public static int[] help = new int[MAXN];
+	
+	public static int[] sortArray(int[] arr) {
+		if (arr.length > 1) {
+			mergeSort(arr, 0, arr.length - 1);
+		}
+		return arr;
+	}
+	
+	public static void mergeSort(int[] arr, int l, int r) {
+		if (l == r) {
+			return;
+		}
+		int m = (l + r) / 2;
+		mergeSort(arr, l, m);
+		mergeSort(arr, m + 1, r);
+		merge(arr, l, m, r);
+	}
+	
+	public static void merge(int[] arr, int l, int m, int r) {
+		int leftCur = l;
+		int rightCur = m + 1;
+		int helpCur = l;
+		while (leftCur <= m && rightCur <= r) {
+			help[helpCur++] = (arr[leftCur] <= arr[rightCur]) ? arr[leftCur++] : arr[rightCur++];
+		}
+		while (leftCur <= m) {
+			help[helpCur++] = arr[leftCur++];
+		}
+		while (rightCur <= r) {
+			help[helpCur++] = arr[rightCur++];
+		}
+		for (int i = l; i <= r; i++) {
+			arr[i] = help[i];
+		}
+	}
+}
