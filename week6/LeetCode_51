@@ -1,0 +1,40 @@
+class Solution {
+    public static List<List<String>> solveNQueens(int n) {
+		List<List<String>> ans = new ArrayList<>();
+		if (n < 1) {
+			return ans;
+		}
+		int limit = (1 << n) - 1;
+		solve(limit, 0, 0, 0, new ArrayList<>(), ans, n);
+		return ans;
+	}
+	
+	public static void solve(int limit, int col, int left, int right, List<Integer> path, List<List<String>> ans, int n) {
+		if (col == limit) {
+			ans.add(convertToBoard(path, n));
+			return;
+		}
+		else {
+			int ban = col | left | right;
+			int candidate = limit & (~ban);
+			while (candidate != 0) {
+				int place = candidate & (-candidate);
+				candidate ^= place;
+				path.add(Integer.bitCount(place - 1));
+				solve(limit, (col | place), (left | place) << 1, (right | place) >> 1, path, ans, n);
+				path.remove(path.size() - 1);
+			}			
+		}
+	}
+	
+	public static List<String> convertToBoard(List<Integer> path, int n) {
+		List<String> board = new ArrayList<>();
+		for (int row : path) {
+			char[] line = new char[n];
+			Arrays.fill(line, '.');
+			line[row] = 'Q';
+			board.add(new String(line));
+		}
+		return board;
+	}
+}
