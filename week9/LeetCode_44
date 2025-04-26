@@ -1,0 +1,38 @@
+class Solution {
+    public boolean isMatch(String str, String pat) {
+        char[] s = str.toCharArray();
+        char[] p = pat.toCharArray();
+        int sn = str.length();
+        int pn = pat.length();
+        int[][] dp = new int[sn + 1][pn + 1];
+        return match(s, p, 0, 0, dp);
+    }
+	
+	public boolean match(char[] s, char[] p, int i, int j, int[][] dp) {
+		if (dp[i][j] != 0) {
+			return dp[i][j] == 1;
+		}
+		boolean ans;
+		if (i == s.length) {
+			if (j == p.length) {
+				ans = true;
+			}
+			else {
+				ans = (p[j] == '*') && match(s, p, i, j + 1, dp);
+			}
+		}
+		else if (j == p.length) {
+			ans = false;
+		}
+		else {
+			if (p[j] != '*') {
+				ans = (s[i] == p[j] || p[j] == '?') && match(s, p, i + 1, j + 1, dp);
+			}
+			else {
+				ans = match(s, p, i + 1, j, dp) || match(s, p, i, j + 1, dp);
+			}
+		}
+		dp[i][j] = ans ? 1 : 2;
+		return ans;
+	}
+}
