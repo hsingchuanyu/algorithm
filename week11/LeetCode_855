@@ -1,0 +1,67 @@
+class ExamRoom {
+		private TreeSet<Integer> takenSeats;
+		private TreeSet<Interval> desIntervals;
+		private int N;
+		
+		class Interval {
+			int x, y, dis;
+			String id;
+			
+			public Interval(int x, int y) {
+				this.x = x;
+				this.y = y;
+				if (x == -1) {
+					this.dis = y;
+				}
+				else if (y == N) {
+					this.dis = N - 1 - x;
+				}
+				else {
+					this.dis = Math.abs(x - y) / 2;
+				}
+				this.id = x + "_" + y;
+			}
+			public boolean equals(Interval i) {
+	            return this.id.equals(i.id);
+	        }
+		}
+		
+		public ExamRoom(int N) {
+			this.takenSeats = new TreeSet<>();
+			this.desIntervals = new TreeSet<>((a, b) -> a.dis != b.dis ? b.dis - a.dis : a.x - b.x);
+			this.N = N;
+			this.desIntervals.add(new Interval(-1, N));
+		}
+		
+		public int seat() {
+			int pos = 0;
+			Interval interval = this.desIntervals.pollFirst();
+			if (interval.x == -1) {
+				desIntervals.add(new Interval(0, interval.y));
+			}
+			else if (interval.y == this.N) {
+				pos = N - 1;
+				desIntervals.add(new Interval(interval.x, N - 1));
+			}
+			else {
+				pos = interval.x + (interval.y - interval.x) / 2;
+				desIntervals.add(new Interval(interval.x, pos));
+				desIntervals.add(new Interval(pos, interval.y));
+			}
+			this.takenSeats.add(pos);
+			return pos;
+		}
+		
+		public void leave(int p) {
+			int startIndex = this.takenSeats.lower(p) == null ? -1 : this.takenSeats.lower(p);
+			int endIndex = this.takenSeats.higher(p) == null ? N : this.takenSeats.higher(p);
+			mergeIntervals(new Interval(startIndex, p), new Interval(p, endIndex), this.desIntervals);
+			this.takenSeats.remove(p);
+		}
+		
+		public void mergeIntervals(Interval i1, Interval i2, TreeSet<Interval> desIntervals) {
+			desIntervals.remove(i1);
+			desIntervals.remove(i2);
+			desIntervals.add(new Interval(i1.x, i2.y));
+		}
+	}
