@@ -1,0 +1,48 @@
+class FreqStack {
+
+		private int maxTimes = 0;
+		
+		private HashMap<Integer, ArrayList<Integer>> countValue = new HashMap<>();
+		
+		private HashMap<Integer, Integer> freValue = new HashMap<>();
+		
+	    public FreqStack() {
+	        
+	    }
+	    
+	    public void push(int val) {
+	        
+	    	freValue.put(val, freValue.getOrDefault(val, 0) + 1);
+	    	int frequency = freValue.get(val);
+	    	if (!countValue.containsKey(frequency)) {
+	    		countValue.put(frequency, new ArrayList<>());
+	    	}
+	    	ArrayList<Integer> countArray = countValue.get(frequency);
+	    	countArray.add(val);
+	    	maxTimes = Math.max(maxTimes, frequency);
+	    }
+	    
+	    public int pop() {
+	        
+	    	ArrayList<Integer> popArray = countValue.get(maxTimes);
+	    	int ans = popArray.remove(popArray.size() - 1);
+	    	if (popArray.size() == 0) {
+	    		countValue.remove(maxTimes--);
+	    	}
+	    	int frequency = freValue.get(ans);
+	    	if (frequency == 1) {
+	    		freValue.remove(ans);
+	    	}
+	    	else {
+	    		freValue.put(ans, frequency - 1);
+	    	}
+	    	return ans;
+	    }
+	}
+
+/**
+ * Your FreqStack object will be instantiated and called as such:
+ * FreqStack obj = new FreqStack();
+ * obj.push(val);
+ * int param_2 = obj.pop();
+ */
