@@ -1,0 +1,35 @@
+class Solution {
+   public static int MAXN = 26;
+	
+	public static int[] count = new int[MAXN];
+	
+	public static boolean[] enter = new boolean[MAXN];
+	
+	public static char[] stack = new char[MAXN];
+	
+	public static int r;
+	
+	public String removeDuplicateLetters(String s) {
+	       
+		r = 0;
+		Arrays.fill(enter, false);
+		Arrays.fill(count, 0);
+		
+		for (char c : s.toCharArray()) {
+			count[c - 'a']++;
+		}
+		
+		for (char c : s.toCharArray()) {
+			if (!enter[c - 'a']) {
+				while (r > 0 && stack[r - 1] > c && count[stack[r - 1] - 'a'] > 0) {
+					enter[stack[r - 1] - 'a'] = false;
+					r--;
+				}
+				stack[r++] = c;
+				enter[c - 'a'] = true;
+			}
+			count[c - 'a']--;
+		}
+		return String.valueOf(stack, 0, r);
+    }
+}
